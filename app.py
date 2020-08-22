@@ -9,7 +9,6 @@ skills = { "echo": echo,
            "bugar": distorceImg }
 def message_received(body):
     json_body = json.loads(body)
-
     if "caption" in json_body and config.number in json_body['caption']:
         action = json_body['caption'].split(" ")[1]
         if action and action.lower() in skills:
@@ -25,7 +24,7 @@ def message_received(body):
 
 def listen():
     while(True):
-        try:
+        # try:
             credentials = pika.PlainCredentials(config.rabbit_user, config.rabbit_password)
             connection = pika.BlockingConnection(
                 pika.ConnectionParameters(host=config.rabbit_address, credentials=credentials))
@@ -38,11 +37,11 @@ def listen():
             channel.queue_bind(exchange=exchange, queue=queue_name, routing_key='')
 
             def callback(ch, method, properties, body):
-                try:
-                    print(" [x] Received %r" % body)
-                    message_received(body)
-                except Exception as msg_err:
-                    print("message error: {}, continuing...".format(msg_err))
+                # try:
+                print(" [x] Received %r" % body)
+                message_received(body)
+                # except Exception as msg_err:
+                #     print("message error: {}, continuing...".format(msg_err))
 
 
             print("started")
@@ -50,9 +49,9 @@ def listen():
             channel.start_consuming()
             
 
-        except Exception as err:
-            print("Caught a channel error: {}, continuing...".format(err))
-            continue
+        # except Exception as err:
+        #     print("Caught a channel error: {}, continuing...".format(err))
+        #     continue
 
 print ("starting")
 listen()
