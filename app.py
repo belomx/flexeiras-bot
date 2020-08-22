@@ -6,11 +6,19 @@ import echo
 import distorceImg
 
 skills = { "echo": echo,
-           "distorceImg": distorceImg }
-
+           "bugar": distorceImg }
 def message_received(body):
     json_body = json.loads(body)
-    if "message" in json_body and config.number in json_body['message']:
+
+    if "caption" in json_body and config.number in json_body['caption']:
+        action = json_body['caption'].split(" ")[1]
+        if action and action.lower() in skills:
+            skills[action.lower()].work(json_body)
+    elif "quoted_message" in json_body and config.number in json_body['quoted_message']:
+        action = json_body['quoted_message'].split(" ")[1]
+        if action and action.lower() in skills:
+            skills[action.lower()].work(json_body)
+    elif "message" in json_body and config.number in json_body['message']:
         action = json_body['message'].split(" ")[1]
         if action and action.lower() in skills:
             skills[action.lower()].work(json_body)
