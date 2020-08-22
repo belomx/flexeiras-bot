@@ -3,8 +3,10 @@ import pika
 import json
 import sender
 import echo
+import distorceImg
 
-skills = { "echo": echo }
+skills = { "echo": echo,
+           "distorceImg": distorceImg }
 
 def message_received(body):
     json_body = json.loads(body)
