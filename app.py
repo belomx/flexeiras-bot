@@ -2,10 +2,16 @@ import config
 import pika
 import json
 import sender
+import echo
+
+skills = { "echo": echo.work }
+
 def message_received(body):
     json_body = json.loads(body)
     if "message" in json_body and config.number in json_body['message']:
-        sender.publish_text(json_body['customer_id'], "echo " + json_body['message'])
+        action = json_body['message'].split(" ")[1]
+        if action in skills:
+            skills[action](json_body)
 
 def listen():
     while(True):
