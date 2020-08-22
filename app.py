@@ -4,14 +4,14 @@ import json
 import sender
 import echo
 
-skills = { "echo": echo.work }
+skills = { "echo": echo }
 
 def message_received(body):
     json_body = json.loads(body)
     if "message" in json_body and config.number in json_body['message']:
         action = json_body['message'].split(" ")[1]
-        if action in skills:
-            skills[action](json_body)
+        if action and action.lower() in skills:
+            skills[action.lower()].work(json_body)
 
 def listen():
     while(True):

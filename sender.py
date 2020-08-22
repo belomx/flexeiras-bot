@@ -6,7 +6,6 @@ import config
 def publish_text(to, content):
     body = { "customer_id": to, "content": content, "msg_id": 1 }
     json_string = json.dumps(body)
-    print(json_string)
     queue_name = 'hook.whatsapp_outbound_message_' + config.number
     exchange = 'exchange.customers_messages'
     credentials = pika.PlainCredentials(config.rabbit_user, config.rabbit_password)
